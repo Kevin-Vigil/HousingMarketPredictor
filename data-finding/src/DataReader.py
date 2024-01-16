@@ -1,16 +1,36 @@
 import tkinter as tk 
 from tkinter import filedialog
+import re
 
 class FileReader():
 
   initPath = ""
 
   def setInitPath(self, path):
+    search = re.finditer("/", path)
+    # print(search)
+    # print(search[-1])
     self.initPath = path
 
+    # print(self.initPath)
+
+  def parseCSV(self, file_path):
+    file = open(file_path, 'r')
+    data = dict()
+    id = 0
+    for i in file:
+      data[id] = i
+      id += 1
+
+    file.close()
+    print(data)
+
   def openFile(self):
+    print(self.initPath)
     file_path = filedialog.askopenfilename(initialdir=self.initPath)
-    if type(file_path) == str:
+    if type(file_path) == str and file_path.endswith('.csv'):
+      self.parseCSV(file_path)
+    elif type(file_path) == str:
       try:
         file = open(file_path,'r')
         print(file.read())
