@@ -1,6 +1,7 @@
 import tkinter as tk 
 from tkinter import filedialog
 import re
+import json
 
 class FileReader():
 
@@ -18,11 +19,15 @@ class FileReader():
     file = open(file_path, 'r')
     data = dict()
     id = 0
+    #write_file = open("./sample.json","x")
     for i in file:
       data[id] = i
       id += 1
 
+    with open("sample.json", "x") as convert_file:
+      convert_file.write(json.dumps(data))
     file.close()
+    #write_file.close()
     print(data)
 
   def openFile(self):
