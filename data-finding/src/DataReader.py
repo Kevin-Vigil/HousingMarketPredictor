@@ -22,7 +22,13 @@ class FileReader():
 
     # print(self.initPath)
 
+  #CleanLine cleans the data to remove certain data points from the CSV based on the format provided by realtor.com
   def cleanLine(self, line):
+    try:
+      date = int(line[0])
+    except Exception:
+      print("Formatting text found, skipping")
+      return False
     return line
 
   
@@ -35,12 +41,13 @@ class FileReader():
     with open(file_path, newline='') as csvfile:
       reader = csv.reader(csvfile, delimiter=',', quotechar='"')
       for row in reader:
-        print(len(row))
+        print(row[0])
         row = self.cleanLine(row)
-        write_file.write(",".join(row) + "\n")
+        if row:
+          write_file.write(",".join(row) + "\n")
 
     write_file.close()
-        # print(row)
+    # print(row)
     # file = open(file_path, 'r')
     # data = dict()
     # id = 0
@@ -59,7 +66,6 @@ class FileReader():
     # file.close()
     # #write_file.close()
     # print(data)
-    return False
 
   def openFile(self):
     # print(self.initPath)
