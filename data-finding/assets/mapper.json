@@ -1,0 +1,13 @@
+{
+  "date": 1,
+  "postal_code": 2,
+  "location_name": 3,
+  "median_price": 4,
+  "median_sqft": 5,
+  "median_price_per_sqft": 6,
+  "average_price": 7,
+  "total_listing_count": 8,
+  "active_listing_count": 9,
+  "median_days_on_market": 10,
+  "quality_flag": 11
+}
