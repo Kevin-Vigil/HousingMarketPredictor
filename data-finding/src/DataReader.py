@@ -179,7 +179,7 @@ def main():
 
 window = tk.Tk()
 button = tk.Button(text="Open file", command=openFile)
-splitter = tk.Button(text="Split csv", command=splitFile)
+splitter = tk.Button(text="Split CSV", command=splitFile)
 
 keyLabel = tk.Label(window, text="Key")
 keyInput = tk.Entry(window, bd =5)
