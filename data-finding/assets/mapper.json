@@ -1,13 +1,13 @@
 {
-  "date": 1,
-  "postal_code": 2,
-  "location_name": 3,
-  "median_price": 4,
-  "median_sqft": 5,
-  "median_price_per_sqft": 6,
-  "average_price": 7,
-  "total_listing_count": 8,
-  "active_listing_count": 9,
-  "median_days_on_market": 10,
-  "quality_flag": 11
+  "1": {"type": "date", "name": "date"},
+  "2": {"type": "int", "name": "postal_code"},
+  "3": {"type": "str", "name": "location_name"},
+  "4": {"type": "int", "name": "median_price"},
+  "5": {"type": "int", "name": "median_sqft"},
+  "6": {"type": "int", "name": "median_price_per_sqft"},
+  "7": {"type": "int", "name": "average_price"},
+  "8": {"type": "int", "name": "total_listing_count"},
+  "9": {"type": "int", "name": "active_listing_count"},
+  "10": {"type": "int", "name": "median_days_on_market"},
+  "11": {"type": "int", "name": "quality_flag"}
 }
