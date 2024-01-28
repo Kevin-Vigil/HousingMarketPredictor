@@ -4,6 +4,7 @@ import re
 import json
 import csv
 import os
+import datetime
 
 class FileReader:
 
@@ -24,26 +25,28 @@ class FileReader:
   #CleanLine cleans the data to remove certain data points from the CSV based on the format provided by realtor.com
   def cleanLine(self, line):
     output = []
-    for i in self.formatter:
+    for i in range(len(self.formatter)):
       #Must always check if location name is found
       #Must also always check if there are a total len of formmater in each line
-      try:
-        int(line[i])
-      except Exception:
-        output.append("\"" + line[i] + "\"")
+      if self.data_mapper[str(i+1)]["type"] == "date":
+        year = line[self.formatter[i]][0:4]
+        month = line[self.formatter[i]][4:]
+        output.append(year + "-" + month + "-" + "1")
+      elif self.data_mapper[str(i+1)]["type"] == "str":
+        output.append("\"" + line[self.formatter[i]] + "\"")
       else:
-        output.append(line[i])
-    if len(output) == len(self.formatter):
-      return output
-    return False
+        output.append(line[self.formatter[i]])
+    return output
 
   def createFormatter(self, line):
+    name_list = []
     for i in range(len(line)):
       for key in self.data_mapper.keys():
-        if line[i] == key:
+        if line[i] == self.data_mapper[key]["name"]:
           self.formatter.append(i)
+          name_list.append(self.data_mapper[key]["name"])
           break
-    #print(self.formatter)
+    return name_list
 
 
 
@@ -55,14 +58,15 @@ class FileReader:
     write_file = open(write_path,"x")
     with open(file_path, newline='') as csvfile:
       reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+      formatter_line = reader.__next__()
+      menu_line = self.createFormatter(formatter_line)
+      write_file.write(",".join(menu_line) + "\n")
       for row in reader:
-        if len(self.formatter) == 0:
-          self.createFormatter(row)
         row = self.cleanLine(row)
         if row:
           write_file.write(",".join(row) + "\n")
-          print(row)
-
+          # print(row)
+    print("Complete")
     write_file.close()
 
 
@@ -112,10 +116,13 @@ class FileSplitter:
           if os.path.exists(new_file_path):
             os.remove(new_file_path)
           self.file_writers.append(open(new_file_path,"x"))
+          self.file_writers[self.file_finder[row[self.file_index]]].write(",".join(menu) + "\n")
+        row[2] = "\"" + row[2] + "\""
         self.file_writers[self.file_finder[row[self.file_index]]].write(",".join(row) + "\n")
       #Close all files before exiting
       for i in self.file_writers:
-        i.close()    
+        i.close()  
+    print("complete")  
     
 def openFile():
   reader = FileReader()
