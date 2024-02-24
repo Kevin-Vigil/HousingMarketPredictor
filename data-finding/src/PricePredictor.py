@@ -9,9 +9,7 @@ import os
 arrXAxis =[]
 arrYAxis =[]
 
-print(os.getcwd())
-df = pd.read_csv("data-finding/data/RDC_Inventory_Core_Metrics_Zip_History_processed_files/75082data.csv")
-df['date'] = pd.to_datetime(df["date"], yearfirst = True)
+
 
 #Graph a CSV given an X and Y axis index
 def graphXY(filePath, xIndex: int, yIndex: int):
@@ -38,6 +36,9 @@ def graphXY(filePath, xIndex: int, yIndex: int):
 
 
 def linearRegression() -> None:
+  print(os.getcwd())
+  df = pd.read_csv("data-finding/data/RDC_Inventory_Core_Metrics_Zip_History_processed_files/75082data.csv")
+  df['date'] = pd.to_datetime(df["date"], yearfirst = True)
   #Preprocessing
   cols = ["postal_code", "location_name", "active_listing_count", "median_days_on_market","median_sqft","average_price","total_listing_count","quality_flag"]
   df = df.drop(cols, axis=1)
