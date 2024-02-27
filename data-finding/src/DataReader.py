@@ -227,6 +227,10 @@ def openFile():
   return True
 
 def main():
+
+  test1 = lineCleaner()
+
+
   keyInput.grid(row=2,column=1, padx=5, pady=10)
   keyLabel.grid(row=2,column=0, padx=5, pady=10)
   button.grid(row=1, column=1, pady=10)
