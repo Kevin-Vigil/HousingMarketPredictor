@@ -5,6 +5,7 @@ import json
 import csv
 import os
 import datetime
+import logging
 
 class FileReader:
 
@@ -19,7 +20,6 @@ class FileReader:
       path = path[search.span()[1]:]
       path = path[::-1]
     self.initPath = path
-
     # print(self.initPath)
 
   #CleanLine cleans the data to remove certain data points from the CSV based on the format provided by realtor.com
@@ -124,7 +124,7 @@ class FileSplitter:
         i.close()  
     print("complete")  
     
-def openFile():
+def openFile(gui, *args, **kargs):
   reader = FileReader()
   file_path = filedialog.askopenfilename(initialdir=reader.initPath)
   if type(file_path) == str and file_path.endswith('.csv'):
@@ -173,6 +173,59 @@ def splitFile():
   del splitter
   return True
 
+# #CleanLine cleans the data to remove certain data points from the CSV based on the format provided by realtor.com
+#   def cleanLine(self, line):
+#     output = []
+#     for i in range(len(self.formatter)):
+#       #Must always check if location name is found
+#       #Must also always check if there are a total len of formmater in each line
+#       if self.data_mapper[str(i+1)]["type"] == "date":
+#         year = line[self.formatter[i]][0:4]
+#         month = line[self.formatter[i]][4:]
+#         output.append(year + "-" + month + "-" + "1")
+#       elif self.data_mapper[str(i+1)]["type"] == "str":
+#         output.append("\"" + line[self.formatter[i]] + "\"")
+#       else:
+#         output.append(line[self.formatter[i]])
+#     return output
+
+def lineCleaner(**kwargs):
+  if "line" in kwargs:
+    logging.info("'line' is in kwargs.")
+    return True
+  logging.error("'line' is not in kwargs")
+  return False
+
+def buttonHandler(**kargs):
+
+  return False
+
+
+
+def openFile():
+  reader = FileReader() #unneeded for gen
+  file_path = filedialog.askopenfilename(initialdir=reader.initPath)#creates a file dialog
+  if type(file_path) == str and file_path.endswith('.csv'):
+    reader.parseCSV(file_path)
+    reader.setInitPath(file_path)
+  elif type(file_path) == str:
+    try:
+      file = open(file_path,'r')
+      print(file.read())
+      file.close()
+    except FileNotFoundError:
+      print("User did not choose a file.\n")
+      del reader
+      return False
+    else:
+      reader.setInitPath(file_path)
+  else:
+    print("User did not choose a file.\n")
+    del reader
+    return False
+  del reader
+  return True
+
 def main():
   keyInput.grid(row=2,column=1, padx=5, pady=10)
   keyLabel.grid(row=2,column=0, padx=5, pady=10)
@@ -183,6 +236,8 @@ def main():
 
 
   # subprocess.Popen(r'explorer /select')
+
+
 
 window = tk.Tk()
 button = tk.Button(text="Open file", command=openFile)
