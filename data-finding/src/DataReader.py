@@ -124,29 +124,7 @@ class FileSplitter:
         i.close()  
     print("complete")  
     
-def openFile(gui, *args, **kargs):
-  reader = FileReader()
-  file_path = filedialog.askopenfilename(initialdir=reader.initPath)
-  if type(file_path) == str and file_path.endswith('.csv'):
-    reader.parseCSV(file_path)
-    reader.setInitPath(file_path)
-  elif type(file_path) == str:
-    try:
-      file = open(file_path,'r')
-      print(file.read())
-      file.close()
-    except FileNotFoundError:
-      print("User did not choose a file.\n")
-      del reader
-      return False
-    else:
-      reader.setInitPath(file_path)
-  else:
-    print("User did not choose a file.\n")
-    del reader
-    return False
-  del reader
-  return True
+
 
 def splitFile():
   splitter = FileSplitter()
@@ -189,22 +167,20 @@ def splitFile():
 #         output.append(line[self.formatter[i]])
 #     return output
 
-def lineCleaner(**kwargs):
-  if "line" in kwargs:
-    logging.info("'line' is in kwargs.")
-    return True
-  logging.error("'line' is not in kwargs")
-  return False
+def fileCleaner(cols, drop_cols)
 
-def buttonHandler(**kargs):
+def lineCleaner(line):
 
   return False
 
+def buttonHandler():
+
+  return False
 
 
-def openFile():
-  reader = FileReader() #unneeded for gen
-  file_path = filedialog.askopenfilename(initialdir=reader.initPath)#creates a file dialog
+def openFile(gui, *args, **kargs):
+  reader = FileReader()
+  file_path = filedialog.askopenfilename(initialdir=reader.initPath)
   if type(file_path) == str and file_path.endswith('.csv'):
     reader.parseCSV(file_path)
     reader.setInitPath(file_path)
@@ -225,6 +201,11 @@ def openFile():
     return False
   del reader
   return True
+
+
+def frameCreator(frameName, *args):
+  #Layout finder
+  return False
 
 def main():
 
