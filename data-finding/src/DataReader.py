@@ -6,10 +6,7 @@ import csv
 import os
 import logging
 
-
-  
-
-#CleanLine cleans the data to remove certain data points from the CSV based on the format provided by realtor.com
+#CleanLine cleans the data to remove certain data points from the CSV based on the format provided by createFormatter
 def cleanLine(line):
   output = []
   for i in range(len(formatter)):
@@ -25,16 +22,6 @@ def cleanLine(line):
       output.append(line[formatter[i]])
   return output
 
-def createFormatter(line):
-  name_list = []
-  for i in range(len(line)):
-    for key in data_mapper.keys():
-      if line[i] == data_mapper[key]["name"]:
-        formatter.append(i)
-        name_list.append(data_mapper[key]["name"])
-        break
-  return name_list
-
 def setInitPath(path: str) -> None:
   path = path[::-1]
   search = re.search("/", path) 
@@ -43,6 +30,7 @@ def setInitPath(path: str) -> None:
     path = path[::-1]
   initPath = path
 
+#Runs through the json file and maps each column so it can properly format when using the clean line function
 def createFormatter(line: list) -> list:
   name_list = []
   for i in range(len(line)):
@@ -53,6 +41,8 @@ def createFormatter(line: list) -> list:
         break
   return name_list
 
+#Function runs through the csv and will write to it's respective file based on a certain key given
+  #EX: if zip_code is given for key, folder will be created with multiple files each created based on the value of the chosen column/key
 def split(file_path: str, key: str) -> bool:
   index_counter = 0 #counter to track writers
   with open(file_path, newline='') as csv_file:
@@ -87,6 +77,8 @@ def split(file_path: str, key: str) -> bool:
   logging.info("complete")
   return True
 
+#Will run through the CSV and cleans based on formatter, or splits based on whether key was passed.
+#Parent function that will call multiple helper functions.
 def parseCSV(file_path: str, **kwargs) -> bool:
   if "key" in kwargs:
     return split(file_path, kwargs["key"])
@@ -106,12 +98,13 @@ def parseCSV(file_path: str, **kwargs) -> bool:
           write_file.write(",".join(row) + "\n")
     logging.info("Complete")
     write_file.close()
-    return False
+    return True
 
+#depending on what button is pressed, this function is called to handle button presses and will process a file
 def openFile(**kwargs) -> None:
   file_path = filedialog.askopenfilename(initialdir=initPath)
   if type(file_path) == str and file_path.endswith('.csv'):
-    parseCSV(file_path, **kwargs)
+    logging.info("Operation completed: " + parseCSV(file_path, **kwargs))
     setInitPath(file_path)
   elif type(file_path) == str:
     try:
@@ -139,17 +132,17 @@ file_finder = {}
 file_writers = []
 file_index = -1
 
-ab_path = os.path.dirname(__file__)
+ab_path = os.path.dirname(__file__) #Grabs the location of the file and creates a path to the formatter (json)
 desired_path = os.path.join(ab_path, "../assets/mapper.json")
-data_mapper = json.load(open(desired_path))
-initPath = ab_path
+data_mapper = json.load(open(desired_path)) #Load
+initPath = ab_path #sets initial path
 formatter = []
 
-window = tk.Tk()
-button = tk.Button(text="Open file", command=lambda: openFile())
-splitter = tk.Button(text="Split CSV", command=lambda: openFile(key = keyInput.get()))
+window = tk.Tk() #Create GUI Root component
+button = tk.Button(text="Open file", command=lambda: openFile()) #Create buttons for each operation
+splitter = tk.Button(text="Split CSV", command=lambda: openFile(key = keyInput.get())) #Button that will grab input from what is put into input field
 
-keyLabel = tk.Label(window, text="Key")
+keyLabel = tk.Label(window, text="Key") #field to input key
 keyInput = tk.Entry(window, bd =5)
 
 if __name__ == "__main__":

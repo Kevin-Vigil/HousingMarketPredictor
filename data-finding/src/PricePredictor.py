@@ -1,10 +1,7 @@
 import matplotlib.pyplot as plot
 import numpy as np
-import csv
 import datetime
 import pandas as pd
-import sys
-import os
 
 arrXAxis =[]
 arrYAxis =[]
@@ -23,7 +20,7 @@ def graphXY(filePath, xIndex: int, yIndex: int):
 #Not all datasets are complete
 
 #Turned this into a fuctnion
-def linearRegression() -> None:
+def linearRegression(file: str) -> None:
   #print(os.getcwd())
   df = pd.read_csv("data-finding/data/RDC_Inventory_Core_Metrics_Zip_History_processed_files/75082data.csv")
   df['date'] = pd.to_datetime(df["date"], yearfirst = True)
